@@ -4,12 +4,10 @@ import axios from 'axios';
 const API_URL = "https://randomuser.me/api/"
 
 const MainDisplay = (props) => {
-    const {picture, name} = props.userInfo;
-    console.log(props.userInfo);
+    const {name} = props.userInfo;
 
     return (
         <> 
-           <img src={picture.medium} />
            <p>
                {`Hello, ${name.first} ${name.last}`}
            </p>
@@ -17,8 +15,43 @@ const MainDisplay = (props) => {
     )
 }
 
+
+const Personal = (props) => {
+    const {dob, email, phone} = props.userInfo;
+
+    return (
+        <> 
+           
+           <ul>
+                <li>Age: {dob.age}</li>
+                <li>Born: {dob.date}</li>
+                <li>Phone number: {phone}</li>
+                <li>Email address: {email}</li>
+           </ul>
+        </>
+    )
+}
+
+
+const Nav = (props) => {
+    const { setCurrentView } = props;
+
+    return (
+        <ul>
+            <li>
+                <button onClick={() => setCurrentView("main")}>Main</button>
+            </li>
+
+            <li>
+                <button onClick={() => setCurrentView("personal")}>Personal Info</button>
+            </li>
+        </ul>
+    )
+}
+
 const RandomUser = () => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentView, setCurrentView] = useState("main")
 
     const fetchRandomUser = async () => {
         const randomUser = await axios.get(API_URL);
@@ -34,11 +67,23 @@ const RandomUser = () => {
         onClick();
     }, []);
 
+    const renderView = (view) => {
+        switch(view){
+            case 'personal':
+                return <Personal userInfo={currentUser} />
+
+            case 'main':
+            default:
+                return <MainDisplay userInfo={currentUser}/>
+        }
+    }
     return (
-        <>  
+        <>     
             {currentUser !== null && <>
-                <MainDisplay userInfo={currentUser} />
-            </>}  
+                <img src={currentUser.picture.medium} />
+                {renderView(currentView)}
+            </>}
+            <Nav setCurrentView={setCurrentView} />
             <br />
             <button onClick={onClick}>Fetch random user</button>
         </>
