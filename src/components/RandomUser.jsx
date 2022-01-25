@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import '../css/randomuser.css'
 
 const API_URL = "https://randomuser.me/api/"
 
@@ -40,7 +41,7 @@ const Nav = (props) => {
     const { setCurrentView } = props;
 
     return (
-        <ul className="navbar">
+        <ul className="nav">
             <li>
                 <button onClick={() => setCurrentView("main")}>Main</button>
             </li>
@@ -82,15 +83,15 @@ const RandomUser = () => {
         }
     }
     return (
-        <>     
+        <div className="randomuser">     
             {currentUser !== null && <>
                 <img src={currentUser.picture.medium} />
-                {renderView(currentView)}
+                <div className="content">{renderView(currentView)}</div>
             </>}
             <Nav setCurrentView={setCurrentView} />
             <br />
             <button onClick={onClick}>Fetch random user</button>
-        </>
+        </div>
     )
 }  
 

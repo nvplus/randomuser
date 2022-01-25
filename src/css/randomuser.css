@@ -1,0 +1,21 @@
+.randomuser {
+    margin: 0 auto;
+    width: auto;
+    text-align: center;
+}
+
+.randomuser ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav li {
+    margin: 0px 3px;
+    display: inline;
+}
+
+.content {
+    height: 6rem;
+    overflow-y:auto;
+}
