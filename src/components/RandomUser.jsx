@@ -17,14 +17,17 @@ const MainDisplay = (props) => {
 
 
 const Personal = (props) => {
+    const months = ["January","February","March","April","May","June","July",
+    "August","September","October","November","December"];
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     const {dob, email, phone} = props.userInfo;
+    const birthdate = new Date(dob.date);
 
     return (
-        <> 
-           
+        <>
            <ul>
                 <li>Age: {dob.age}</li>
-                <li>Born: {dob.date}</li>
+                <li>Born: {`${days[birthdate.getDay()]} ${months[birthdate.getMonth()]} ${birthdate.getDay()}, ${birthdate.getFullYear()}`}</li>
                 <li>Phone number: {phone}</li>
                 <li>Email address: {email}</li>
            </ul>
@@ -37,7 +40,7 @@ const Nav = (props) => {
     const { setCurrentView } = props;
 
     return (
-        <ul>
+        <ul className="navbar">
             <li>
                 <button onClick={() => setCurrentView("main")}>Main</button>
             </li>
@@ -59,6 +62,7 @@ const RandomUser = () => {
     }
 
     const onClick = async () => {
+        setCurrentView("main");
         setCurrentUser(await fetchRandomUser());
     } 
 
