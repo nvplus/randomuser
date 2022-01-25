@@ -4,33 +4,41 @@ import '../css/randomuser.css'
 
 const API_URL = "https://randomuser.me/api/"
 
+const formatDate = (date => {
+    const months = ["January","February","March","April","May","June","July",
+    "August","September","October","November","December"];
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    return `${days[date.getDay()]} ${months[date.getMonth()]} ${date.getDay()}, ${date.getFullYear()}`
+});
+
 const MainDisplay = (props) => {
     const {name} = props.userInfo;
+    console.log(props.userInfo);
 
     return (
-        <> 
-           <p>
-               {`Hello, ${name.first} ${name.last}`}
-           </p>
-        </>
+        <div className="main"> 
+            Hi, I'm
+           <h2>
+               {`${name.first} ${name.last}`}
+           </h2>
+        </div>
     )
 }
 
 
 const Personal = (props) => {
-    const months = ["January","February","March","April","May","June","July",
-    "August","September","October","November","December"];
-    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
     const {dob, email, phone} = props.userInfo;
     const birthdate = new Date(dob.date);
 
     return (
         <>
            <ul>
-                <li>Age: {dob.age}</li>
-                <li>Born: {`${days[birthdate.getDay()]} ${months[birthdate.getMonth()]} ${birthdate.getDay()}, ${birthdate.getFullYear()}`}</li>
-                <li>Phone number: {phone}</li>
-                <li>Email address: {email}</li>
+                <li><b>Age:</b> {dob.age}</li>
+                <li><b>Birthdate:</b> {formatDate(birthdate)}</li>
+                <li><b>Phone:</b> {phone}</li>
+                <li><b>E-mail:</b> {email}</li>
            </ul>
         </>
     )
@@ -43,22 +51,30 @@ const Nav = (props) => {
     return (
         <ul className="nav">
             <li>
-                <button onClick={() => setCurrentView("main")}>Main</button>
+                <NavButton onClick={() => setCurrentView("main")}>Main</NavButton>
             </li>
 
             <li>
-                <button onClick={() => setCurrentView("personal")}>Personal Info</button>
+                <NavButton onClick={() => setCurrentView("personal")}>Personal Info</NavButton>
             </li>
         </ul>
     )
 }
 
+const NavButton = (props) => {
+    return (
+        <button onClick={props.onClick} className="nav-button">
+            {props.children}
+        </button>
+    )
+}
 const RandomUser = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [currentView, setCurrentView] = useState("main")
 
     const fetchRandomUser = async () => {
         const randomUser = await axios.get(API_URL);
+        console.log(randomUser.data.results[0]);
         return randomUser.data.results[0];
     }
 
@@ -85,12 +101,11 @@ const RandomUser = () => {
     return (
         <div className="randomuser">     
             {currentUser !== null && <>
-                <img src={currentUser.picture.medium} />
+                <img src={currentUser.picture.large} className="avatar" />
                 <div className="content">{renderView(currentView)}</div>
             </>}
             <Nav setCurrentView={setCurrentView} />
             <br />
-            <button onClick={onClick}>Fetch random user</button>
         </div>
     )
 }  

@@ -1,5 +1,9 @@
 .app {
-    margin: auto;
-    width: 50%;
+    margin: 6rem auto;
+    width: 20%;
     padding: 50px 0px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 4px 4px 20px black;
+    color: black;
 }
